@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>AURORA (极光) 白皮书 - Web4 AI 金融操作系统 v1.1</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  
+  <link rel="icon" href="assets/logo.png?v=1" type="image/png">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
+  
+  <style>
+    :root {
+      --theme-color: #00b386;
+      --sidebar-background: #f8f9fa;
+      --background: #ffffff;
+      --base-color: #2c3e50;
+      --heading-color: #008f6b;
+    }
+    .sidebar { background-color: var(--sidebar-background); border-right: 1px solid #eee; }
+    .sidebar .app-name { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 0; font-size: 24px; font-weight: bold; }
+    .sidebar .app-name img { width: 40px !important; height: 40px !important; margin: 0 !important; object-fit: contain; }
+    .sidebar .app-name span { color: var(--heading-color); }
+    .markdown-section h1, .markdown-section h2, .markdown-section h3 { color: var(--heading-color); }
+    .mermaid { background: #fdfdfd; padding: 15px; border: 1px solid #eee; border-radius: 8px; overflow-x: auto; margin-bottom: 20px; display: flex; justify-content: center; }
+    
+    /* 自定义手动导航栏 */
+    .custom-nav {
+      position: absolute;
+      right: 0;
+      top: 0;
+      z-index: 1000;
+      padding: 10px 20px;
+      display: flex;
+      gap: 10px;
+      list-style: none;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(4px);
+      border-bottom-left-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin: 0;
+    }
+    .custom-nav a {
+      color: var(--base-color);
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid #ddd;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      transition: all 0.2s;
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-block;
+    }
+    .custom-nav a:hover {
+      color: #fff;
+      background: var(--theme-color);
+      border-color: var(--theme-color);
+    }
+
+    /* 移动端适配 */
+    @media screen and (max-width: 768px) {
+      .custom-nav {
+        padding: 8px 10px;
+        gap: 5px;
+        background: rgba(255, 255, 255, 0.98);
+      }
+      .custom-nav a {
+        padding: 4px 8px;
+        font-size: 11px;
+      }
+      /* 避免遮挡移动端侧边栏切换按钮 */
+      .sidebar-toggle {
+        z-index: 1001;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 手动定义的导航栏 -->
+  <nav class="custom-nav" id="lang-switcher"></nav>
+
+  <div id="app">加载中...</div>
+
+  <script>
+    // --- 1. 强制修复 querySelector 报错 ---
+    const _querySelector = document.querySelector;
+    document.querySelector = function(s) {
+      try { return _querySelector.apply(this, arguments); } catch (e) { return null; }
+    };
+
+    // --- 2. 确定当前语言环境 ---
+    const getLang = () => window.location.hash.includes('#/en/') ? 'en' : 'zh';
+
+    // --- 3. 手动渲染导航栏 ---
+    const renderNav = () => {
+      const lang = getLang();
+      const nav = document.getElementById('lang-switcher');
+      const isEn = lang === 'en';
+      
+      const switchBtn = isEn ? 
+        `<a onclick="window.location.href='#/zh/README'; window.location.reload();">中文版</a>` : 
+        `<a onclick="window.location.href='#/en/README'; window.location.reload();">English</a>`;
+      
+      const officialSite = isEn ? 'Official Site' : '官网';
+      
+      nav.innerHTML = `
+        <li>${switchBtn}</li>
+        <li><a href="https://panagora.com/" target="_blank">${officialSite}</a></li>
+        <li><a href="https://github.com/MEMEFANS/AURORA.git" target="_blank">GitHub</a></li>
+      `;
+    };
+
+    // --- 4. 路由初始化与重定向 ---
+    if (!window.location.hash || window.location.hash === '#/') {
+      window.location.hash = '#/zh/README';
+    }
+
+    window.$docsify = {
+      name: '&lt;img src="/whitepaper/assets/logo.png" alt="logo"&gt;&lt;span&gt;AURORA&lt;/span&gt;',
+      nameLink: '#/' + getLang() + '/README',
+      basePath: '/whitepaper/',
+      loadSidebar: true,
+      loadNavbar: false,
+      subMaxLevel: 3,
+      auto2top: true,
+      alias: {
+        '/en/(.*)': '/en/$1',
+        '/zh/(.*)': '/zh/$1',
+        '/.*/_sidebar.md': '/' + getLang() + '/_sidebar.md',
+        '/en/': '/en/README.md',
+        '/zh/': '/zh/README.md',
+        '/((?!en|zh).*)': '/' + getLang() + '/$1'
+      },
+      pagination: {
+        previousText: { '/en/': 'Previous', '/': '上一章节' },
+        nextText: { '/en/': 'Next', '/': '下一章节' },
+        crossChapter: true,
+        crossChapterText: true
+      }
+    };
+
+    renderNav();
+  </script>
+
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
+    (function() {
+      var plugin = function(hook) {
+        hook.afterEach(function(html, next) {
+          var container = document.createElement('div');
+          container.innerHTML = html;
+          container.querySelectorAll('pre[data-lang="mermaid"]').forEach(function(el) {
+            var m = document.createElement('div');
+            m.className = 'mermaid';
+            m.textContent = el.textContent;
+            el.parentNode.replaceChild(m, el);
+          });
+          next(container.innerHTML);
+        });
+        hook.doneEach(function() {
+          if (typeof mermaid !== 'undefined') {
+            mermaid.run({ querySelector: '.mermaid' });
+          }
+        });
+      };
+      window.$docsify.plugins = [].concat(plugin, window.$docsify.plugins || []);
+    })();
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-katex@latest/dist/docsify-katex.js"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+</body>
+</html>

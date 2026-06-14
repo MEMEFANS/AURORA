@@ -118,20 +118,13 @@
     }
 
     window.$docsify = {
-      name: '&lt;img src="/whitepaper/assets/logo.png" alt="logo"&gt;&lt;span&gt;AURORA&lt;/span&gt;',
+      name: '&lt;img src="assets/logo.png" alt="logo"&gt;&lt;span&gt;AURORA&lt;/span&gt;',
       nameLink: '#/' + getLang() + '/README',
+      basePath: '/whitepaper/',
       loadSidebar: true,
       loadNavbar: false,
       subMaxLevel: 3,
       auto2top: true,
-      alias: {
-        '/en/(.*)': '/whitepaper/en/$1',
-        '/zh/(.*)': '/whitepaper/zh/$1',
-        '/.*/_sidebar.md': '/whitepaper/' + getLang() + '/_sidebar.md',
-        '/en/': '/whitepaper/en/README.md',
-        '/zh/': '/whitepaper/zh/README.md',
-        '/((?!en|zh).*)': '/whitepaper/' + getLang() + '/$1'
-      },
       pagination: {
         previousText: { '/en/': 'Previous', '/': '上一章节' },
         nextText: { '/en/': 'Next', '/': '下一章节' },
